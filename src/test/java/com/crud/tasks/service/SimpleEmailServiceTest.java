@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleEmailServiceTest {
@@ -25,10 +26,13 @@ public class SimpleEmailServiceTest {
     @Mock
     private JavaMailSender javaMailSender;
 
+    @Mock
+    private BuildEmailFactory buildEmailFactory;
+
     @Test
     public void shouldSendEmail() {
         //Given
-        Mail mail = new Mail("test@test.com",  "Test", "Test Message");
+        Mail mail = new Mail("test@test.com",  "Tasks: New Trello card", "Test Message");
 //        Mail mail = new Mail("test@test.com", "testCc@test.com", "Test", "Test Message");
 
         MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
@@ -41,11 +45,13 @@ public class SimpleEmailServiceTest {
             }
         };
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        when(buildEmailFactory.buildEmail(mail)).thenReturn("Test Message");
+
+        /*SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
 //        mailMessage.setCc(mail.getToCc());
         mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
+        mailMessage.setText(mail.getMessage());*/
         //When
         simpleEmailService.send(mail);
         //Then

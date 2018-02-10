@@ -15,7 +15,8 @@ import java.util.Optional;
 @Service
 public class TrelloService {
 
-    private static final String SUBJECT = "Tasks: New Trello card";
+    public static final String SUBJECT = "Tasks: New Trello card";
+//    private static final String SUBJECT = "Tasks: New Trello card";
 
     @Autowired
     private AdminConfig adminConfig;
@@ -32,7 +33,8 @@ public class TrelloService {
 
     public CreatedTrelloCardDto createTrelloCard(final TrelloCardDto trelloCardDto) {
         CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
-        Optional.ofNullable(newCard).ifPresent(card -> emailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT,"New card: " + trelloCardDto.getName() + " has been created on your Trello account")));
+        Optional.ofNullable(newCard).ifPresent(card -> emailService.send(new Mail(adminConfig.getAdminMail(),
+                SUBJECT,"New card: " + trelloCardDto.getName() + " has been created on your Trello account")));
         return newCard;
     }
 }
