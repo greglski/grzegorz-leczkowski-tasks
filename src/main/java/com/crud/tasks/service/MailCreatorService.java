@@ -60,7 +60,6 @@ public class MailCreatorService {
         context.setVariable("timestamp", "This mail was sent on: " + now());
         context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend/");
         context.setVariable("button", "Visit website");
-//        context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("goodbye_message", "See you soon");
         context.setVariable("company_details", companyConfig.getCompanyName() +
                 ", email: " + companyConfig.getCompanyEmail() +
