@@ -8,15 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleEmailServiceTest {
@@ -27,32 +25,11 @@ public class SimpleEmailServiceTest {
     @Mock
     private JavaMailSender javaMailSender;
 
-    @Mock
-    private BuildEmailFactory buildEmailFactory;
-
     @Test
     public void shouldSendEmail() throws MessagingException {
         //Given
         Mail mail = new Mail("test@test.com",  "Tasks: New Trello card", "<h1>Test Message</h>");
 //        Mail mail = new Mail("test@test.com", "testCc@test.com", "Test", "Test Message");
-
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-                messageHelper.setTo(mail.getMailTo());
-                messageHelper.setSubject(mail.getSubject());
-                messageHelper.setText(mail.getMessage(), true);
-
-        /*MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
-            @Override
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-                messageHelper.setTo(mail.getMailTo());
-                messageHelper.setSubject(mail.getSubject());
-                messageHelper.setText(mail.getMessage(), true);
-            }
-        };*/
-
-//        when(buildEmailFactory.buildEmail(mail)).thenReturn("Test Message");
 
         /*SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
@@ -62,6 +39,6 @@ public class SimpleEmailServiceTest {
         //When
         simpleEmailService.send(mail);
         //Then
-        verify(javaMailSender, times(1)).send(mimeMessage);
+        verify(javaMailSender, times(1)).send(any(MimeMessagePreparator.class));
     }
 }
